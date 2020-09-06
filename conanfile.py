@@ -55,9 +55,9 @@ class FontconfigConan(ConanFile):
                     "--enable-shared=%s" % ("yes" if self.options.shared else "no"),
                     "--disable-docs"]
             self._autotools = AutoToolsBuildEnvironment(self)
+            tools.replace_in_file(os.path.join(self._source_subfolder, 'config.h.in'), '#undef HAVE_DOPRNT\n', '/* #undef HAVE_DOPRNT */\n')
             self._autotools.configure(configure_dir=self._source_subfolder, args=args)
             tools.replace_in_file("Makefile", "po-conf test", "po-conf")
-            tools.replace_in_file(os.path.join(self._source_subfolder, 'config.h'), '#undef HAVE_DOPRNT', '/* #undef HAVE_DOPRNT */')
         return self._autotools
 
     def _patch_files(self):
